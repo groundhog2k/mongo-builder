@@ -1,0 +1,13 @@
+name: "Merge Request"
+
+on: [pull_request]
+
+jobs:
+  verify_image:
+    name: "Verify container image build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout" 
+        uses: actions/checkout@v3
+      - name: "Verify that container image can be build"
+        run: docker build . -t grounhog2k/mongo-builder:verify
