@@ -3,6 +3,9 @@ on:
     branches:
       - main
 
+env:
+  BUILDER_VERSION: 5-amd64
+
 jobs:
   push-image:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: groundhog2k/mongo-builder:5-amd64
+          tags: groundhog2k/mongo-builder:${{ env.BUILDER_VERSION }}
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
