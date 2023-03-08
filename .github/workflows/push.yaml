@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.mongo
+          file: ./Dockerfile
           platforms: linux/amd64
           push: true
           tags: groundhog2k/mongo-builder:${{ env.BUILDER_VERSION }}
