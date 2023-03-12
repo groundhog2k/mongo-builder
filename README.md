@@ -44,4 +44,4 @@ docker build . -t custom/mongo:$MONGO_VERSION --build-arg MONGO_VERSION=$MONGO_V
 
 | Builder version | MongoDB version |
 |---|---|
-| 5-amd64 | MongoDB 5.x for x86/64 |
+| 5-amd64 | MongoDB 5.x for x86/64, MongoDB 6.x for x86/64 |
