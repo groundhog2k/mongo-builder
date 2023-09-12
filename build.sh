@@ -3,6 +3,8 @@ git clone https://github.com/mongodb/mongo.git
 cd mongo
 version="$1"
 shift 1
+imagename="$1"
+shift 1
 git checkout tags/r$version -b v$version
 python3 -m pip install -r etc/pip/compile-requirements.txt
 python3 buildscripts/scons.py install-servers --disable-warnings-as-errors CCFLAGS="-march=goldmont" $@
@@ -11,3 +13,9 @@ for x in mongo*; do strip -s $x; done
 mkdir -p /buildoutput
 cp * /buildoutput
 cd /
+cat <<EOF | tee ./Dockerfile
+ARG MONGO_VERSION
+FROM mongo:$MONGO_VERSION
+COPY buildoutput/ /usr/bin
+EOF
+docker build . -t $imagename:$version --build-arg MONGO_VERSION=$version

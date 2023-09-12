@@ -16,32 +16,23 @@ There is an automatic [mongo build project](https://github.com/groundhog2k/mongo
 
 ## How to use it?
 
-Create a output directory that will take the build output (mongod/mongos) at the end of the build process.
-Start the build process for a specific MongoDB version and mount the build output directory into the container.
-
-All this can be done with following commands:
+Start the builder by using docker-in-docker (dind) and the specific MongoDB version - All this can be done with following commands:
 
 ```bash
-mkdir -p ./buildoutput
-docker run --rm -v ${PWD}/buildoutput:/buildoutput groundhog2k/mongo-builder:5-amd64 /bin/bash "-c" "./build.sh $MONGO_VERSION"
+docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock groundhog2k/mongo-builder:6-amd64 <version> <image-name>
 ```
 
-The variable `MONGO_VERSION` must be set to the MongoDB version to build (f.e. `5.0.15`).
+Parameter `<version>` must be set to the MongoDB version to build (f.e. `6.0.9`).
+Parameter `<image-name>` is the name of the produced target container image (f.e. `myimage`)
+
+Example:
+The following command will create a container image `myregistry/mongodb:6.0.9`:
+`docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock groundhog2k/mongo-builder:6-amd64 6.0.9 myregistry/mongodb`
+
 Always use the appropriate builder version for a specific MongoDB! (see table below)
-
-After build was successfully finished the output can be copied into a new MongoDB container image with following Dockerfile and bash script:
-
-```bash
-cat <<EOF | tee ./Dockerfile
-ARG MONGO_VERSION
-FROM mongo:$MONGO_VERSION-focal
-COPY buildoutput/ /usr/bin
-EOF
-docker build . -t custom/mongo:$MONGO_VERSION --build-arg MONGO_VERSION=$MONGO_VERSION
-```
 
 ## Which versions are supported by this builder?
 
 | Builder version | MongoDB version |
 |---|---|
-| 5-amd64 | MongoDB 5.x for x86/64, MongoDB 6.x for x86/64 |
+| 6-amd64 | MongoDB 5.x for x86/64, MongoDB 6.x for x86/64 |
