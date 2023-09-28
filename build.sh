@@ -12,10 +12,12 @@ cd build/install/bin
 for x in mongo*; do strip -s $x; done
 mkdir -p /buildoutput
 cp * /buildoutput
-cd /
+mdkir -p /docker
+cd /docker
+echo "Building $imagename:$version"
 cat <<EOF | tee ./Dockerfile
 ARG MONGO_VERSION
-FROM mongo:$MONGO_VERSION
-COPY buildoutput/ /usr/bin
+FROM mongo:$version
+COPY /buildoutput/ /usr/bin
 EOF
-docker build . -t $imagename:$version --build-arg MONGO_VERSION=$version
+docker build -t ${imagename}:${version} .
