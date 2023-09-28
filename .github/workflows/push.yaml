@@ -4,7 +4,7 @@ on:
       - main
 
 env:
-  BUILDER_VERSION: 5-amd64
+  BUILDER_VERSION: 6-amd64
 
 jobs:
   push-image:
